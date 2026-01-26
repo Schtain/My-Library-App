@@ -1,0 +1,28 @@
+/*ПЕРЕМЕННЫЕ */
+:root {
+  --bg-main: #f7f7f5;
+  --bg-surface: #ffffff;
+
+  --text-primary: #1c1c1c;
+  --text-secondary: #6b6b6b;
+
+  --border-color: #e5e5e5;
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: sustem-ui, -apple-system, sans-serif;
+  background-color: var(--bg-main);
+  color: var(--text-primary);
+}
