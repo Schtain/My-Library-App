@@ -1,0 +1,49 @@
+.book-card {
+    background-color: var(--bg-surface);
+    border-radius: var(--radius-md);
+    padding: var(--space-md);
+    border: 1px solid var(--border-color);
+
+    display: flex;
+    justify-content: space-between;
+
+    border-left: 4px solid #ccc;
+}
+
+.book-card--Read {
+    border-left-color: #10b981;
+}
+
+.book-card--Reading {
+    border-left-color: #f59e0b;
+}
+
+.book-card--Abandoned {
+    border-left-color: #ef4444;
+}
+
+.delete-card-button {
+    height: 50px;
+    align-self: center;
+}
+
+.status-select {
+    padding: 4px 10px;
+    border-radius: 12px;
+    border: 1px solid #ddd;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    background-color: white;
+    margin-bottom: 10px;
+}
+
+.status-select:hover {
+    border-color: #999;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .book-card:hover {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+}

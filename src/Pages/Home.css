@@ -1,0 +1,11 @@
+.home {
+    min-height: 100vh;
+    background-color: var(--bg-main);
+}
+
+.home__content {
+    padding: var(--space-md);
+    padding-bottom: 96px;
+    max-width: 1200px;
+    margin: 0 auto;
+}

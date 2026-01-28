@@ -1,0 +1,34 @@
+.book-list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-md);
+    margin-top: var(--space-md);
+}
+
+.status--Read {
+    background-color: green;
+}
+
+.status--Reading {
+    background-color: orange;
+}
+
+.status--Abandoned {
+    background-color: red;
+}
+
+
+
+
+
+@media (min-width: 768px) {
+    .book-list {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1024px) {
+    .book-list {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
