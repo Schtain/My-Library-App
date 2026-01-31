@@ -64,3 +64,8 @@
     align-self: flex-end;
     margin: 10px;
 }
+
+
+.sidebar-tags-list {
+    list-style: none;
+}

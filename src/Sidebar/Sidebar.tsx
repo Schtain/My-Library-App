@@ -2,16 +2,20 @@ import './Sidebar.css'
 
 interface SidebarProps {
     onClose: () => void;
+    uniqueTagsArray: string[];
+    onCheckedTag: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 
-export function Sidebar({ onClose }: SidebarProps) {
+export function Sidebar({ onClose, uniqueTagsArray, onCheckedTag }: SidebarProps) {
 
 
     return (
         <aside className='sidebar'>
             <button className='sidebar-close-button' onClick={onClose}>X</button>
             <div className='sidebar-content'>
+
+                {/*БАЗОВЫЕ ВАРИАНТЫ СОРТИРОВКИ*/}
                 <section className='sidebar-section'>
                     <h3 className='sidebar-title'>Sort by</h3>
 
@@ -31,23 +35,37 @@ export function Sidebar({ onClose }: SidebarProps) {
                     </label>
                 </section>
 
+                {/*ООБРАННЫЕ ТЭГИ ДЛЯ ЧЕКБОКСОВ */}
+
                 <section className='sidebar-section'>
-                    <h3 className='sidebar-itle'>Tags</h3>
+                    <ul className='sidebar-tags-list'>
 
-                    <label className='sidebar-option'>
-                        <input type="checkbox" />
-                        Sci-Fi (1)
-                    </label>
 
-                    <label className='sidebar-option'>
-                        <input type="checkbox" />
-                        Fantasy (1)
-                    </label>
+                        <h3 className='sidebar-title'>Tags</h3>
 
-                    <label className='sidebar-option'>
-                        <input type="checkbox" />
-                        Classic (2)
-                    </label>
+                        {
+                            uniqueTagsArray.map(tag => (
+
+                                <li key={tag} className='tag-item'>
+                                    <label className='tag-label'>
+                                        <span>{tag}</span>
+                                        <input
+                                            type='checkbox'
+                                            className='tag-checkbox'
+                                            name={tag}
+                                            value={tag}
+                                            onChange={onCheckedTag}
+                                        />
+                                    </label>
+                                </li>
+
+                            ))
+                        }
+
+
+
+
+                    </ul>
                 </section>
             </div>
 

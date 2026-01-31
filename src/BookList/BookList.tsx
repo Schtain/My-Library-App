@@ -4,7 +4,7 @@ import './BookList.css';
 type BookStatus = 'Read' | 'Reading' | 'Abandoned';
 
 interface Book {
-    id: string;
+    id: number;
     title: string;
     author: string;
     status: BookStatus;
@@ -14,10 +14,11 @@ interface Book {
 
 interface BookListProps {
     books: Book[];
-    onStatusChange: (id: string, newStatus: BookStatus) => void;
+    onStatusChange: (id: number, newStatus: BookStatus) => void;
+    onDeleteBook: (id: number) => void;
 }
 
-export function BookList({ books, onStatusChange }: BookListProps) {
+export function BookList({ books, onStatusChange, onDeleteBook }: BookListProps) {
 
 
 
@@ -32,6 +33,7 @@ export function BookList({ books, onStatusChange }: BookListProps) {
                     status={book.status}
                     tags={book.tags}
                     onStatusChange={onStatusChange}
+                    onDeleteBook={onDeleteBook}
                 />
             ))}
         </section>

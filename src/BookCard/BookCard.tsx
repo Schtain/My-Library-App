@@ -3,12 +3,13 @@ import './BookCard.css'
 type BookStatus = 'Read' | 'Reading' | 'Abandoned';
 
 interface BookCardProps {
-    id: string;
+    id: number;
     title: string;
     author: string;
     status: BookStatus;
     tags: string[];
-    onStatusChange?: (id: string, newStatus: BookStatus) => void;
+    onStatusChange?: (id: number, newStatus: BookStatus) => void;
+    onDeleteBook: (id: number) => void;
 }
 
 export function BookCard(props: BookCardProps) {
@@ -42,7 +43,7 @@ export function BookCard(props: BookCardProps) {
                 </div>
             </div>
 
-            <button className='delete-card-button'>Delete</button>
+            <button className='delete-card-button' onClick={() => props.onDeleteBook(props.id)}>Delete</button>
         </div>
     );
 }
