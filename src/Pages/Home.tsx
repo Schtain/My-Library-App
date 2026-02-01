@@ -52,6 +52,9 @@ export function Home() {
         }
     });
 
+    const [editingBookId, setEditingBookId] = useState(0);
+    const [editingBook, setEditingBook] = useState<Book | null>(null);
+
     const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
     const getBooksToShow = () => {
@@ -132,6 +135,29 @@ export function Home() {
         setBooks(previous => previous.filter(book => book.id !== id))
     }
 
+    // ФУНКЦИЯ ОБНОВЛЕНИЯ КНИГИ
+
+    const editBook = (id: number) => {
+        setEditingBookId(id);
+        console.log(editingBookId)
+
+        const editingBook = books.find(book => book.id === id);
+        setEditingBook(editingBook ? editingBook : null)
+
+        setIsModalOpen(true);
+    }
+
+    const updateBook = (updatedBook: Book) => {
+        setBooks(
+            books.map(book =>
+                book.id === updatedBook.id ? { ...updatedBook } : book
+            )
+        );
+
+        setEditingBook(null);
+        setIsModalOpen(false);
+    }
+
 
 
 
@@ -140,14 +166,24 @@ export function Home() {
     return (
         <div className='home'>
             {/*ОКНО ДОБАВЛЕНИЯ КНИГИ */}
-            {isModalOpen && <AddBookModal onAddBook={addBook} />}
+            {isModalOpen && <AddBookModal
+                bookToEdit={editingBook ? editingBook : null}
+                onAddBook={addBook}
+                onUpdateBook={updateBook}
+            />}
             {isModalOpen && (<Overlay onClick={() => setIsModalOpen(false)} />)}
 
             <Header onMenuClick={() => setIsSidebarOpen(true)} onButtonClick={() => setIsModalOpen(true)} />
 
 
             {/*САЙДДБАР С МЕНЮ */}
-            {isSidebarOpen && (<Sidebar onCheckedTag={onCheckedTag} uniqueTagsArray={uniqueTagsArray} onClose={() => setIsSidebarOpen(false)} />)}
+            {isSidebarOpen && (<Sidebar
+                selectedTags={selectedTags}
+                onCheckedTag={onCheckedTag}
+                uniqueTagsArray={uniqueTagsArray} onClose={() => setIsSidebarOpen(false)}
+                onResetTags={() => setSelectedTags([])}
+
+            />)}
             {isSidebarOpen && (<Overlay onClick={() => setIsSidebarOpen(false)} />)}
 
             {/*СПИСОК КНИГ (ЛИСТ) ХРАНЯЩИЙ КАРТОЧКИ С КНИГАМИ */}
@@ -156,6 +192,7 @@ export function Home() {
                     books={getBooksToShow()}
                     onStatusChange={handleStatusChange}
                     onDeleteBook={deleteBook}
+                    onEditBook={editBook}
                 />
             </main>
             {/* <AddBookButton /> */}

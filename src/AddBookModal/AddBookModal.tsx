@@ -1,21 +1,50 @@
 import './AddBookModal.css'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+
+type BookStatus = 'Read' | 'Reading' | 'Abandoned';
+
+interface Book {
+    id: number;
+    title: string;
+    author: string;
+    status: BookStatus;
+    tags: string[];
+}
+
 
 
 interface AddBookModalProps {
     onAddBook: (title: string, author: string, tags: string[]) => void;
+    bookToEdit: Book | null;
+    onUpdateBook: (book: Book) => void;
 }
 
 
-export function AddBookModal({ onAddBook }: AddBookModalProps) {
+export function AddBookModal({ onAddBook, bookToEdit, onUpdateBook }: AddBookModalProps) {
 
     const [title, setTitle] = useState('');
     const [author, setAuthor] = useState('');
     const [tagsInput, setTagsInput] = useState('');
 
 
+    useEffect(() => {
+        if (bookToEdit) {
+            setTitle(prev => prev !== bookToEdit.title ? bookToEdit.title : prev);
+            setAuthor(prev => prev !== bookToEdit.author ? bookToEdit.author : prev);
+            setTagsInput(prev =>
+                prev !== bookToEdit.tags.join(',') ? bookToEdit.tags.join(',') : prev
+            );
+        } else {
+            setTitle('');
+            setAuthor('');
+            setTagsInput('');
+        }
+
+    }, [bookToEdit]);
+
     const handleSubmit = () => {
-        if (!title.trim || !author.trim()) {
+
+        if (!title.trim() || !author.trim()) {
             alert('Please fill in title and author');
             return;
         }
@@ -24,6 +53,19 @@ export function AddBookModal({ onAddBook }: AddBookModalProps) {
             .split(',')
             .map(tag => tag.trim())
             .filter(tag => tag.length > 0);
+
+        if (bookToEdit) {
+            const updatedBook: Book = {
+                ...bookToEdit,
+                title,
+                author,
+                tags
+            };
+
+            onUpdateBook(updatedBook);
+            return
+        }
+
 
         onAddBook(title, author, tags);
 
@@ -67,7 +109,7 @@ export function AddBookModal({ onAddBook }: AddBookModalProps) {
                 placeholder='Comment (not used yet)'
             ></textarea>
 
-            <button onClick={handleSubmit}>Add Book</button>
+            <button onClick={handleSubmit}>{bookToEdit ? 'Update' : 'Add book'}</button>
         </div>
     );
 }

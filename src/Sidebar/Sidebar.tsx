@@ -4,10 +4,12 @@ interface SidebarProps {
     onClose: () => void;
     uniqueTagsArray: string[];
     onCheckedTag: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    selectedTags: string[];
+    onResetTags: () => void;
 }
 
 
-export function Sidebar({ onClose, uniqueTagsArray, onCheckedTag }: SidebarProps) {
+export function Sidebar({ onClose, uniqueTagsArray, onCheckedTag, selectedTags, onResetTags }: SidebarProps) {
 
 
     return (
@@ -55,6 +57,7 @@ export function Sidebar({ onClose, uniqueTagsArray, onCheckedTag }: SidebarProps
                                             name={tag}
                                             value={tag}
                                             onChange={onCheckedTag}
+                                            checked={selectedTags.includes(tag) ? true : false}
                                         />
                                     </label>
                                 </li>
@@ -70,6 +73,12 @@ export function Sidebar({ onClose, uniqueTagsArray, onCheckedTag }: SidebarProps
             </div>
 
             <div className='sidebar-footer'>
+                <button
+                    className='sidebar-button'
+                    onClick={onResetTags}
+                >
+                    Reset
+                </button>
                 <button className='sidebar-button'>
                     Search
                 </button>

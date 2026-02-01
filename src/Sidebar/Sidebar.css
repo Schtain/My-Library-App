@@ -57,6 +57,8 @@
     border-radius: 8px;
 
     font-size: 1rem;
+
+    margin: 5px;
 }
 
 .sidebar-close-button {
@@ -68,4 +70,12 @@
 
 .sidebar-tags-list {
     list-style: none;
+}
+
+.tag-label {
+    display: grid;
+    grid-template-columns: 1fr 50px;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
 }

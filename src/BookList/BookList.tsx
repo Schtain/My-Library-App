@@ -16,9 +16,10 @@ interface BookListProps {
     books: Book[];
     onStatusChange: (id: number, newStatus: BookStatus) => void;
     onDeleteBook: (id: number) => void;
+    onEditBook: (id: number) => void;
 }
 
-export function BookList({ books, onStatusChange, onDeleteBook }: BookListProps) {
+export function BookList({ books, onStatusChange, onDeleteBook, onEditBook }: BookListProps) {
 
 
 
@@ -34,6 +35,7 @@ export function BookList({ books, onStatusChange, onDeleteBook }: BookListProps)
                     tags={book.tags}
                     onStatusChange={onStatusChange}
                     onDeleteBook={onDeleteBook}
+                    onEditBook={onEditBook}
                 />
             ))}
         </section>

@@ -22,8 +22,22 @@
     border-left-color: #ef4444;
 }
 
+
+.card-buttons-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
 .delete-card-button {
     height: 50px;
+    width: 65px;
+    align-self: center;
+}
+
+.edit-card-button {
+    height: 50px;
+    width: 65px;
     align-self: center;
 }
 

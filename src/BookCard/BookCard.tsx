@@ -10,6 +10,7 @@ interface BookCardProps {
     tags: string[];
     onStatusChange?: (id: number, newStatus: BookStatus) => void;
     onDeleteBook: (id: number) => void;
+    onEditBook: (id: number) => void;
 }
 
 export function BookCard(props: BookCardProps) {
@@ -43,7 +44,22 @@ export function BookCard(props: BookCardProps) {
                 </div>
             </div>
 
-            <button className='delete-card-button' onClick={() => props.onDeleteBook(props.id)}>Delete</button>
+
+            <div className='card-buttons-container'>
+                <button
+                    className='delete-card-button'
+                    onClick={() => props.onDeleteBook(props.id)}
+                >
+                    Delete
+                </button>
+
+                <button
+                    className='edit-card-button'
+                    onClick={() => props.onEditBook(props.id)}
+                >
+                    Edit
+                </button>
+            </div>
         </div>
     );
 }
