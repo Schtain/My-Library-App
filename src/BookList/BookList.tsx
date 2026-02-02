@@ -9,6 +9,7 @@ interface Book {
     author: string;
     status: BookStatus;
     tags: string[];
+    addedAt: number;
 }
 
 
@@ -33,6 +34,7 @@ export function BookList({ books, onStatusChange, onDeleteBook, onEditBook }: Bo
                     author={book.author}
                     status={book.status}
                     tags={book.tags}
+                    addedAt={book.addedAt}
                     onStatusChange={onStatusChange}
                     onDeleteBook={onDeleteBook}
                     onEditBook={onEditBook}

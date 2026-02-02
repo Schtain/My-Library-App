@@ -1,15 +1,33 @@
 import './Sidebar.css'
 
+
+
 interface SidebarProps {
     onClose: () => void;
     uniqueTagsArray: string[];
     onCheckedTag: (event: React.ChangeEvent<HTMLInputElement>) => void;
     selectedTags: string[];
-    onResetTags: () => void;
+    onReset: () => void;
+
+    sortField: 'title' | 'author' | 'status' | 'date';
+    sortDirection: 'asc' | 'desc';
+
+    onChangeSortField: (field: 'title' | 'author' | 'status' | 'date') => void;
+    onToggleSortDirection: () => void;
+    tagsCount: Record<string, number>
 }
 
 
-export function Sidebar({ onClose, uniqueTagsArray, onCheckedTag, selectedTags, onResetTags }: SidebarProps) {
+export function Sidebar({
+    onClose, uniqueTagsArray,
+    onCheckedTag, selectedTags,
+    onReset,
+    sortField,
+    sortDirection,
+    onChangeSortField,
+    onToggleSortDirection,
+    tagsCount
+}: SidebarProps) {
 
 
     return (
@@ -18,23 +36,70 @@ export function Sidebar({ onClose, uniqueTagsArray, onCheckedTag, selectedTags, 
             <div className='sidebar-content'>
 
                 {/*БАЗОВЫЕ ВАРИАНТЫ СОРТИРОВКИ*/}
+
+
+
                 <section className='sidebar-section'>
                     <h3 className='sidebar-title'>Sort by</h3>
+                    <div className='sidebar-basic-sort-menu'>
+                        <div className='sidebar-basic-sort-options'>
+                            <label className='sidebar-option'>
+                                <input
+                                    type="radio"
+                                    name='sortField'
+                                    value='title'
 
-                    <label className='sidebar-option'>
-                        <input type="radio" name='sort' />
-                        Title (A-Z)
-                    </label>
+                                    checked={sortField === 'title'}
+                                    onChange={() => onChangeSortField('title')}
+                                />
+                                Title
+                            </label>
 
-                    <label className='sidebar-option'>
-                        <input type="radio" name='sort' />
-                        Author (A-Z)
-                    </label>
 
-                    <label className='sidebar-option'>
-                        <input type='radio' name='sort' />
-                        Status
-                    </label>
+                            <label className='sidebar-option'>
+                                <input
+                                    type="radio"
+                                    name='sortField'
+                                    value='author'
+
+                                    checked={sortField === 'author'}
+                                    onChange={() => onChangeSortField('author')}
+                                />
+                                Author
+                            </label>
+
+                            <label className='sidebar-option'>
+                                <input
+                                    type='radio'
+                                    name='sort'
+                                    value='status'
+
+                                    checked={sortField === 'date'}
+                                    onChange={() => onChangeSortField('date')}
+                                />
+                                Date
+                            </label>
+
+                            <label className='sidebar-option'>
+                                <input
+                                    type='radio'
+                                    name='sort'
+                                    value='status'
+
+                                    checked={sortField === 'status'}
+                                    onChange={() => onChangeSortField('status')}
+                                />
+                                Status
+                            </label>
+                        </div>
+                        {/*ПЕРЕКЛЮЧЕНИЕ НАПРАВЛЕНИЯ */}
+                        <button
+                            className='sort-direction-toggle-button'
+                            onClick={onToggleSortDirection}
+                        >
+                            {sortDirection === 'asc' ? '↑ A-Z' : '↓ Z-A'}
+                        </button>
+                    </div>
                 </section>
 
                 {/*ООБРАННЫЕ ТЭГИ ДЛЯ ЧЕКБОКСОВ */}
@@ -50,7 +115,8 @@ export function Sidebar({ onClose, uniqueTagsArray, onCheckedTag, selectedTags, 
 
                                 <li key={tag} className='tag-item'>
                                     <label className='tag-label'>
-                                        <span>{tag}</span>
+                                        <span className='tag-name-container'>{tag} ({tagsCount[tag]})</span>
+
                                         <input
                                             type='checkbox'
                                             className='tag-checkbox'
@@ -70,12 +136,12 @@ export function Sidebar({ onClose, uniqueTagsArray, onCheckedTag, selectedTags, 
 
                     </ul>
                 </section>
-            </div>
+            </div >
 
             <div className='sidebar-footer'>
                 <button
                     className='sidebar-button'
-                    onClick={onResetTags}
+                    onClick={onReset}
                 >
                     Reset
                 </button>
@@ -84,6 +150,17 @@ export function Sidebar({ onClose, uniqueTagsArray, onCheckedTag, selectedTags, 
                 </button>
 
             </div>
-        </aside>
+        </aside >
     );
 }
+
+/* 
+ФОРМАТ ВЫВОДА ДЛЯ КНОПОК
+
+ <label> Title
+        <label> <input type="radio" name="sort" value="title-asc" />(A-Z)</label>
+        <label> <input type="radio" name="sort" value="title-desc" />(Z-A)</label>
+      </label>
+
+
+*/

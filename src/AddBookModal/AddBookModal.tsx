@@ -9,6 +9,7 @@ interface Book {
     author: string;
     status: BookStatus;
     tags: string[];
+    addedAt: number;
 }
 
 

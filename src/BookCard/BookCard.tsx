@@ -8,12 +8,19 @@ interface BookCardProps {
     author: string;
     status: BookStatus;
     tags: string[];
+    addedAt: number;
     onStatusChange?: (id: number, newStatus: BookStatus) => void;
     onDeleteBook: (id: number) => void;
     onEditBook: (id: number) => void;
 }
 
 export function BookCard(props: BookCardProps) {
+
+    const formatedDate = new Date(props.addedAt).toLocaleDateString('en-GB', {
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric'
+    });
 
 
     return (
@@ -42,6 +49,7 @@ export function BookCard(props: BookCardProps) {
                         </span>
                     ))}
                 </div>
+                <p className='book-card-date'>{formatedDate}</p>
             </div>
 
 
