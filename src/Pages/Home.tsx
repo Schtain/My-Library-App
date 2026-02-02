@@ -32,7 +32,7 @@ export function Home() {
     // СОСТОЯНИЕ ДЛЯ СОРТИРОВКИ
 
     const [sortField, setSortField] = useState<'title' | 'author' | 'status' | 'date'>('title');
-    const [sortDirection, setSortDirection] = useState<'desc' | 'asc'>('desc');
+    const [sortDirection, setSortDirection] = useState<'desc' | 'asc'>('asc');
 
 
     const toggleDirection = () => {
