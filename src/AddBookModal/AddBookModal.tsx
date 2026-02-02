@@ -64,6 +64,9 @@ export function AddBookModal({ onAddBook, bookToEdit, onUpdateBook }: AddBookMod
             };
 
             onUpdateBook(updatedBook);
+            setTitle('');
+            setAuthor('');
+            setTagsInput('');
             return
         }
 
