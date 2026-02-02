@@ -12,51 +12,16 @@ export function Home() {
 
 
 
-    const exampleBooks = [
-        {
-            id: 1,
-            title: "Dune",
-            author: "Frank Herbert",
-            status: "Read",
-            tags: ['sci-fi', 'classic'],
-            addedAt: 1769415668462,
-        },
-        {
-            id: 2,
-            title: "1984",
-            author: 'George Orwell',
-            status: 'Read',
-            tags: ['dystopia', 'politics'],
-            addedAt: 1768810896825,
-        },
-        {
-            id: 3,
-            title: "The Hobbit",
-            author: 'J. R. R. Tolkien',
-            status: 'Reading',
-            tags: ['fantasy', 'classic'],
-            addedAt: 1768292526256,
-        },
-        {
-            id: 4,
-            title: "The Twelve Chairs",
-            author: "Ilf and Petrov",
-            status: 'Abandoned',
-            tags: ['classic', 'comedy'],
-            addedAt: 1769674947907,
-        }
-    ]
-
     // СОСТОЯНИЯ
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [books, setBooks] = useState<Book[]>(() => {
         try {
             const savedBooks = localStorage.getItem('books');
-            return savedBooks ? JSON.parse(savedBooks) : exampleBooks; //! ЗАМЕНИТЬ НА ПУСТОЙ МАССИВ
+            return savedBooks ? JSON.parse(savedBooks) : []; //! ЗАМЕНИТЬ НА ПУСТОЙ МАССИВ
         } catch (error) {
             console.log('Fail to receive data from local storage: ', error);
-            return exampleBooks; //! ЗАМЕНИТЬ НА ПУСТОЙ МАССИВ
+            return []; //! ЗАМЕНИТЬ НА ПУСТОЙ МАССИВ
         }
     });
 
