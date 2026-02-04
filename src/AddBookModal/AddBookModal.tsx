@@ -83,7 +83,7 @@ export function AddBookModal({ onAddBook, bookToEdit, onUpdateBook }: AddBookMod
 
     return (
         <div className='book-modal'>
-            <h3>Add new book</h3>
+            <h3>{bookToEdit ? 'Update book' : 'Add new book'}</h3>
 
 
             <input type='text'

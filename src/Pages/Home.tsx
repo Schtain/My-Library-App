@@ -194,6 +194,13 @@ export function Home() {
         setIsModalOpen(false);
     }
 
+    // ЗАКРЫТИЕ МОДАЛКИ (фикс бага с сохранением остояния инпутов)
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+        setEditingBook(null);
+    }
+
 
 
 
@@ -202,12 +209,14 @@ export function Home() {
     return (
         <div className='home'>
             {/*ОКНО ДОБАВЛЕНИЯ КНИГИ */}
-            {isModalOpen && <AddBookModal
-                bookToEdit={editingBook ? editingBook : null}
-                onAddBook={addBook}
-                onUpdateBook={updateBook}
-            />}
-            {isModalOpen && (<Overlay onClick={() => setIsModalOpen(false)} />)}
+            {isModalOpen && (
+                <AddBookModal
+                    key={editingBook?.id || 'new'}
+                    bookToEdit={editingBook ? editingBook : null}
+                    onAddBook={addBook}
+                    onUpdateBook={updateBook}
+                />)}
+            {isModalOpen && (<Overlay onClick={closeModal} />)}
 
             <Header onMenuClick={() => setIsSidebarOpen(true)} onButtonClick={() => setIsModalOpen(true)} />
 
