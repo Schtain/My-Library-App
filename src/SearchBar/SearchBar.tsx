@@ -1,12 +1,17 @@
-import { useState, type Dispatch, type SetStateAction, useEffect } from "react";
+import { type Dispatch, type SetStateAction, useEffect } from "react";
 import { useDebounce } from "../hooks";
 
 interface SearchBarProps {
   onSearch: Dispatch<SetStateAction<string>>;
+  searchInput: string;
+  setSearchInput: Dispatch<SetStateAction<string>>;
 }
 
-export default function SearchBar({ onSearch }: SearchBarProps) {
-  const [searchInput, setSearchInput] = useState("");
+export default function SearchBar({
+  onSearch,
+  searchInput,
+  setSearchInput,
+}: SearchBarProps) {
   const debouncedSearch = useDebounce(searchInput);
 
   useEffect(() => {

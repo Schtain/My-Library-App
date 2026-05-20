@@ -9,6 +9,8 @@ interface SidebarProps {
   selectedTags: string[];
   onReset: () => void;
   onSearch: Dispatch<SetStateAction<string>>;
+  searchInput: string;
+  setSearchInput: Dispatch<SetStateAction<string>>;
 
   sortField: "title" | "author" | "status" | "date";
   sortDirection: "asc" | "desc";
@@ -19,6 +21,8 @@ interface SidebarProps {
 }
 
 export function Sidebar({
+  searchInput,
+  setSearchInput,
   onClose,
   uniqueTagsArray,
   onCheckedTag,
@@ -98,7 +102,11 @@ export function Sidebar({
         </section>
         {/*SEACH BAR */}
 
-        <SearchBar onSearch={onSearch} />
+        <SearchBar
+          setSearchInput={setSearchInput}
+          searchInput={searchInput}
+          onSearch={onSearch}
+        />
         {/*ООБРАННЫЕ ТЭГИ ДЛЯ ЧЕКБОКСОВ */}
 
         <section className="sidebar-section">

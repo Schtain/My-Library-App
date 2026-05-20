@@ -27,6 +27,7 @@ export function Home() {
 
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   // Query string for serching
+  const [searchInput, setSearchInput] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   // СОСТОЯНИЕ ДЛЯ СОРТИРОВКИ
 
@@ -74,6 +75,7 @@ export function Home() {
     setSortField("title");
     setSortDirection("desc");
     setSearchQuery("");
+    setSearchInput("");
   };
 
   const getBooksToShow = () => {
@@ -235,6 +237,8 @@ export function Home() {
       {/*САЙДДБАР С МЕНЮ */}
       {isSidebarOpen && (
         <Sidebar
+          setSearchInput={setSearchInput}
+          searchInput={searchInput}
           onSearch={setSearchQuery}
           selectedTags={selectedTags}
           onCheckedTag={onCheckedTag}
