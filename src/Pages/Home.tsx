@@ -1,252 +1,265 @@
-import './Home.css'
-import { BookList } from '../BookList/BookList';
-import { Header } from '../Header/Header';
-import { Sidebar } from '../Sidebar/Sidebar';
-import { useState, useEffect } from 'react';
-import { AddBookModal } from '../AddBookModal/AddBookModal';
-import { Overlay } from '../Overlay/Overlay';
+import "./Home.css";
+import { BookList } from "../BookList/BookList";
+import { Header } from "../Header/Header";
+import { Sidebar } from "../Sidebar/Sidebar";
+import { useState, useEffect } from "react";
+import { AddBookModal } from "../AddBookModal/AddBookModal";
+import { Overlay } from "../Overlay/Overlay";
 //import { AddBookButton } '../AddBookButton/AddBookButton';
 
-
 export function Home() {
+  // СОСТОЯНИЯ
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  // СПИСОК КНИГ, BOOKS LIST
+  const [books, setBooks] = useState<Book[]>(() => {
+    try {
+      const savedBooks = localStorage.getItem("books");
+      return savedBooks ? JSON.parse(savedBooks) : [];
+    } catch (error) {
+      console.log("Fail to receive data from local storage: ", error);
+      return [];
+    }
+  });
 
+  const [editingBookId, setEditingBookId] = useState(0);
+  const [editingBook, setEditingBook] = useState<Book | null>(null);
 
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  // Query string for serching
+  const [searchQuery, setSearchQuery] = useState("");
+  // СОСТОЯНИЕ ДЛЯ СОРТИРОВКИ
 
-    // СОСТОЯНИЯ
-    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [books, setBooks] = useState<Book[]>(() => {
-        try {
-            const savedBooks = localStorage.getItem('books');
-            return savedBooks ? JSON.parse(savedBooks) : []; //! ЗАМЕНИТЬ НА ПУСТОЙ МАССИВ
-        } catch (error) {
-            console.log('Fail to receive data from local storage: ', error);
-            return []; //! ЗАМЕНИТЬ НА ПУСТОЙ МАССИВ
-        }
-    });
+  const [sortField, setSortField] = useState<
+    "title" | "author" | "status" | "date"
+  >("title");
+  const [sortDirection, setSortDirection] = useState<"desc" | "asc">("asc");
 
-    const [editingBookId, setEditingBookId] = useState(0);
-    const [editingBook, setEditingBook] = useState<Book | null>(null);
+  const toggleDirection = () => {
+    setSortDirection((prev) => (prev === "asc" ? "desc" : "asc"));
+  };
 
-    const [selectedTags, setSelectedTags] = useState<string[]>([]);
-    // СОСТОЯНИЕ ДЛЯ СОРТИРОВКИ
+  // СОРТИРОВКА КНИГ ИСХОДЯ ИЗ МОДА СОРТИРОВК, дополнение функции getBooksToShow для сортировки филнального массива
+  const sortBooks = (books: Book[]) => {
+    const sortedBooks = [...books];
 
-    const [sortField, setSortField] = useState<'title' | 'author' | 'status' | 'date'>('title');
-    const [sortDirection, setSortDirection] = useState<'desc' | 'asc'>('asc');
+    let result;
 
+    switch (sortField) {
+      case "title":
+        result = sortedBooks.sort((a, b) => a.title.localeCompare(b.title));
+        break;
 
-    const toggleDirection = () => {
-        setSortDirection(prev => prev === 'asc' ? 'desc' : 'asc');
+      case "author":
+        result = sortedBooks.sort((a, b) => a.author.localeCompare(b.author));
+        break;
+
+      case "status":
+        result = sortedBooks.sort((a, b) => a.status.localeCompare(b.status));
+        break;
+
+      case "date":
+        result = sortedBooks.sort((a, b) => a.addedAt - b.addedAt);
+        break;
+
+      default:
+        result = sortedBooks;
     }
 
-    // СОРТИРОВКА КНИГ ИСХОДЯ ИЗ МОДА СОРТИРОВК, дополнение функции getBooksToShow для сортировки филнального массива
-    const sortBooks = (books: Book[]) => {
-        const sortedBooks = [...books];
+    return sortDirection === "desc" ? result.reverse() : result;
+  };
 
-        let result;
+  const reset = () => {
+    setSelectedTags([]);
+    setSortField("title");
+    setSortDirection("desc");
+    setSearchQuery("");
+  };
 
-        switch (sortField) {
-
-            case 'title':
-                result = sortedBooks.sort((a, b) =>
-                    a.title.localeCompare(b.title));
-                break;
-
-            case 'author':
-                result = sortedBooks.sort((a, b) =>
-                    a.author.localeCompare(b.author));
-                break;
-
-            case 'status':
-                result = sortedBooks.sort((a, b) =>
-                    a.status.localeCompare(b.status));
-                break;
-
-            case 'date':
-                result = sortedBooks.sort((a, b) =>
-                    a.addedAt - b.addedAt);
-                break;
-
-            default:
-                result = sortedBooks;
-        }
-
-        return sortDirection === 'desc' ? result.reverse() : result;
-
+  const getBooksToShow = () => {
+    let result = books;
+    // Cheking for searchQuery
+    if (searchQuery.trim() !== "") {
+      result = result.filter(
+        (book) =>
+          book.title
+            .toLocaleLowerCase()
+            .includes(searchQuery.toLocaleLowerCase()) ||
+          book.author.toLocaleLowerCase().includes(searchQuery.toLowerCase()),
+      );
     }
 
-    const reset = () => {
-        setSelectedTags([]);
-        setSortField('title');
-        setSortDirection('desc')
-    }
-
-    const getBooksToShow = () => {
-        let result = books;
-
-        if (selectedTags.length > 0) {
-            result = result.filter(book => {
-                return selectedTags.every(tag => {
-                    return book.tags.includes(tag);
-                })
-            })
-        }
-        return sortBooks(result);
-    }
-    // ДОБАВЛЕНИЕ ТЭГОВ В СПИСОК ВЫБРАННЫХ ТЭГОВ ДЛЯ ПРОВЕРКИ
-    const onCheckedTag = (event: React.ChangeEvent<HTMLInputElement>) => {
-        if (event.target.checked) {
-            setSelectedTags(previous => [...previous, event.target.value])
-        } else {
-            setSelectedTags(previous => previous.filter(tag => tag !== event.target.value))
-        }
-    };
-
-    // ПОЛУЧЕНИЕ И ОБРАБОТКА ТЭГОВ
-
-    const uniqueTagsArray = Array.from(new Set(books.flatMap(book => book.tags))).sort();
-
-    // ПОДСЧЁТ ТЭГОВ
-
-    const tagsCount = books.reduce((acc, book) => {
-        book.tags.forEach(tag => {
-            acc[tag] = (acc[tag] || 0) + 1;
+    if (selectedTags.length > 0) {
+      result = result.filter((book) => {
+        return selectedTags.every((tag) => {
+          return book.tags.includes(tag);
         });
-        return acc;
-    }, {} as Record<string, number>);
-
-    // СХРАННЕНИЕ КНИГ В ХРАНИЛИЩЕ
-    useEffect(() => {
-        localStorage.setItem('books', JSON.stringify(books))
-        console.log('Book list has beend saved to local storage')
-
-    }, [books]);
-
-
-    type BookStatus = 'Read' | 'Reading' | 'Abandoned';
-
-    interface Book {
-        id: number;
-        title: string;
-        author: string;
-        status: BookStatus;
-        tags: string[];
-        addedAt: number;
+      });
     }
-
-    // ФУНКЦИИ
-
-    //ФУНКЦИЯ СМЕНЫ СТАТУСА КНИГИ
-    const handleStatusChange = (id: number, newStatus: BookStatus) => {
-        setBooks(prevBooks =>
-            prevBooks.map(book =>
-                book.id === id ? { ...book, status: newStatus } : book
-            )
-        );
-    };
-
-    //ФКНЦИЯ ДОБАВЛЕНИЯ КНИГИ
-    const addBook = (title: string, author: string, tags: string[]) => {
-
-        const normalizedTags = tags.map(tag => tag.trim().toLowerCase())
-
-        const newBook: Book = {
-            id: Date.now(),
-            title: title,
-            author: author,
-            status: 'Reading',
-            tags: normalizedTags,
-            addedAt: Date.now(),
-        }
-        setBooks(prevBooks => [...prevBooks, newBook]);
-        setIsModalOpen(false); //! ПОТЕНЦИАЛЬНО ПОДЛЕЖИТ УДАЛЕНИЮ
+    return sortBooks(result);
+  };
+  // ДОБАВЛЕНИЕ ТЭГОВ В СПИСОК ВЫБРАННЫХ ТЭГОВ ДЛЯ ПРОВЕРКИ
+  const onCheckedTag = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.checked) {
+      setSelectedTags((previous) => [...previous, event.target.value]);
+    } else {
+      setSelectedTags((previous) =>
+        previous.filter((tag) => tag !== event.target.value),
+      );
     }
+  };
 
-    //ФУНКЦИЯ УДАЛЕНИЯ КНИГИ
+  // ПОЛУЧЕНИЕ И ОБРАБОТКА ТЭГОВ
 
-    const deleteBook = (id: number) => {
-        setBooks(previous => previous.filter(book => book.id !== id))
-    }
+  const uniqueTagsArray = Array.from(
+    new Set(books.flatMap((book) => book.tags)),
+  ).sort();
 
-    // ФУНКЦИЯ ОБНОВЛЕНИЯ КНИГИ
+  // ПОДСЧЁТ ТЭГОВ
 
-    const editBook = (id: number) => {
-        setEditingBookId(id);
-        console.log(editingBookId)
+  const tagsCount = books.reduce(
+    (acc, book) => {
+      book.tags.forEach((tag) => {
+        acc[tag] = (acc[tag] || 0) + 1;
+      });
+      return acc;
+    },
+    {} as Record<string, number>,
+  );
 
-        const editingBook = books.find(book => book.id === id);
-        setEditingBook(editingBook ? editingBook : null)
+  // СХРАННЕНИЕ КНИГ В ХРАНИЛИЩЕ
+  useEffect(() => {
+    localStorage.setItem("books", JSON.stringify(books));
+    console.log("Book list has beend saved to local storage");
+  }, [books]);
 
-        setIsModalOpen(true);
-    }
+  type BookStatus = "Read" | "Reading" | "Abandoned";
 
-    const updateBook = (updatedBook: Book) => {
+  interface Book {
+    id: number;
+    title: string;
+    author: string;
+    status: BookStatus;
+    tags: string[];
+    addedAt: number;
+  }
 
-        const normalizedTags = updatedBook.tags.map(tag => tag.trim().toLowerCase())
+  // ФУНКЦИИ
 
-        setBooks(
-            books.map(book =>
-                book.id === updatedBook.id ? { ...updatedBook, tags: normalizedTags, addedAt: book.addedAt } : book
-            )
-        );
-
-        setEditingBook(null);
-        setIsModalOpen(false);
-    }
-
-    // ЗАКРЫТИЕ МОДАЛКИ (фикс бага с сохранением остояния инпутов)
-
-    const closeModal = () => {
-        setIsModalOpen(false);
-        setEditingBook(null);
-    }
-
-
-
-
-
-
-    return (
-        <div className='home'>
-            {/*ОКНО ДОБАВЛЕНИЯ КНИГИ */}
-            {isModalOpen && (
-                <AddBookModal
-                    key={editingBook?.id || 'new'}
-                    bookToEdit={editingBook ? editingBook : null}
-                    onAddBook={addBook}
-                    onUpdateBook={updateBook}
-                />)}
-            {isModalOpen && (<Overlay onClick={closeModal} />)}
-
-            <Header onMenuClick={() => setIsSidebarOpen(true)} onButtonClick={() => setIsModalOpen(true)} />
-
-
-            {/*САЙДДБАР С МЕНЮ */}
-            {isSidebarOpen && (<Sidebar
-                selectedTags={selectedTags}
-                onCheckedTag={onCheckedTag}
-                uniqueTagsArray={uniqueTagsArray} onClose={() => setIsSidebarOpen(false)}
-                onReset={reset}
-
-                sortField={sortField}
-                sortDirection={sortDirection}
-                onChangeSortField={setSortField}
-                onToggleSortDirection={toggleDirection}
-                tagsCount={tagsCount}
-
-            />)}
-            {isSidebarOpen && (<Overlay onClick={() => setIsSidebarOpen(false)} />)}
-
-            {/*СПИСОК КНИГ (ЛИСТ) ХРАНЯЩИЙ КАРТОЧКИ С КНИГАМИ */}
-            <main className="home__content">
-                <BookList
-                    books={getBooksToShow()}
-                    onStatusChange={handleStatusChange}
-                    onDeleteBook={deleteBook}
-                    onEditBook={editBook}
-                />
-            </main>
-            {/* <AddBookButton /> */}
-        </div>
+  //ФУНКЦИЯ СМЕНЫ СТАТУСА КНИГИ
+  const handleStatusChange = (id: number, newStatus: BookStatus) => {
+    setBooks((prevBooks) =>
+      prevBooks.map((book) =>
+        book.id === id ? { ...book, status: newStatus } : book,
+      ),
     );
+  };
+
+  //ФКНЦИЯ ДОБАВЛЕНИЯ КНИГИ
+  const addBook = (title: string, author: string, tags: string[]) => {
+    const normalizedTags = tags.map((tag) => tag.trim().toLowerCase());
+
+    const newBook: Book = {
+      id: Date.now(),
+      title: title,
+      author: author,
+      status: "Reading",
+      tags: normalizedTags,
+      addedAt: Date.now(),
+    };
+    setBooks((prevBooks) => [...prevBooks, newBook]);
+    setIsModalOpen(false); //! ПОТЕНЦИАЛЬНО ПОДЛЕЖИТ УДАЛЕНИЮ
+  };
+
+  //ФУНКЦИЯ УДАЛЕНИЯ КНИГИ
+
+  const deleteBook = (id: number) => {
+    setBooks((previous) => previous.filter((book) => book.id !== id));
+  };
+
+  // ФУНКЦИЯ ОБНОВЛЕНИЯ КНИГИ
+
+  const editBook = (id: number) => {
+    setEditingBookId(id);
+    console.log(editingBookId);
+
+    const editingBook = books.find((book) => book.id === id);
+    setEditingBook(editingBook ? editingBook : null);
+
+    setIsModalOpen(true);
+  };
+
+  const updateBook = (updatedBook: Book) => {
+    const normalizedTags = updatedBook.tags.map((tag) =>
+      tag.trim().toLowerCase(),
+    );
+
+    setBooks(
+      books.map((book) =>
+        book.id === updatedBook.id
+          ? { ...updatedBook, tags: normalizedTags, addedAt: book.addedAt }
+          : book,
+      ),
+    );
+
+    setEditingBook(null);
+    setIsModalOpen(false);
+  };
+
+  // ЗАКРЫТИЕ МОДАЛКИ (фикс бага с сохранением остояния инпутов)
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setEditingBook(null);
+  };
+
+  // !MAIN ELEMENTS
+  return (
+    <div className="home">
+      {/*ОКНО ДОБАВЛЕНИЯ КНИГИ */}
+      {isModalOpen && (
+        <AddBookModal
+          key={editingBook?.id || "new"}
+          bookToEdit={editingBook ? editingBook : null}
+          onAddBook={addBook}
+          onUpdateBook={updateBook}
+        />
+      )}
+      {isModalOpen && <Overlay onClick={closeModal} />}
+
+      <Header
+        onMenuClick={() => setIsSidebarOpen(true)}
+        onButtonClick={() => setIsModalOpen(true)}
+      />
+
+      {/*САЙДДБАР С МЕНЮ */}
+      {isSidebarOpen && (
+        <Sidebar
+          onSearch={setSearchQuery}
+          selectedTags={selectedTags}
+          onCheckedTag={onCheckedTag}
+          uniqueTagsArray={uniqueTagsArray}
+          onClose={() => setIsSidebarOpen(false)}
+          onReset={reset}
+          sortField={sortField}
+          sortDirection={sortDirection}
+          onChangeSortField={setSortField}
+          onToggleSortDirection={toggleDirection}
+          tagsCount={tagsCount}
+        />
+      )}
+      {isSidebarOpen && <Overlay onClick={() => setIsSidebarOpen(false)} />}
+
+      {/*СПИСОК КНИГ (ЛИСТ) ХРАНЯЩИЙ КАРТОЧКИ С КНИГАМИ */}
+      <main className="home__content">
+        <BookList
+          books={getBooksToShow()}
+          onStatusChange={handleStatusChange}
+          onDeleteBook={deleteBook}
+          onEditBook={editBook}
+        />
+      </main>
+      {/* <AddBookButton /> */}
+    </div>
+  );
 }
