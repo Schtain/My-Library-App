@@ -73,7 +73,7 @@ export function Home() {
   const reset = () => {
     setSelectedTags([]);
     setSortField("title");
-    setSortDirection("desc");
+    setSortDirection("asc");
     setSearchQuery("");
     setSearchInput("");
   };
