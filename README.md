@@ -89,4 +89,4 @@ src/
 
 ![Sidebar](Screenshots/Sidebar.png)
 ![Modal](Screenshots/Modal.png)
-![Sidebar](screenshots/Sidebar.png)
+![Sidebar](Screenshots/Sidebar.png)
