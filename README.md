@@ -88,5 +88,11 @@ src/
 ## Screenshots
 
 ![Home](Screenshots/home.png)
+<<<<<<< HEAD
 ![Sidebar](Screenshots/Sidebar.png)
 ![Modal](Screenshots/Modal.png)
+=======
+![Sidebar](screenshots/Sidebar.png)
+![Modal](screenshots/Modal.png)
+
+>>>>>>> bdf3ab6c3bc26190472b6dd65289e77e6fdb79ad
