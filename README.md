@@ -1,73 +1,86 @@
-# React + TypeScript + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# 📚 My Library — Personal Book Tracking App
 
-Currently, two official plugins are available:
+A full-featured React application for managing your personal book collection.  
+Add, edit, delete, filter, sort, and search books — all with persistent local storage.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-## React Compiler
+## ✨ Features
+- **📖 Book Management**  
+  Add new books, edit existing ones, and delete books you no longer need.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **🏷️ Tag System**  
+  Each book can have multiple tags (e.g., "fantasy", "classic").  
+  Filter books by selecting one or more tags.
 
-## Expanding the ESLint configuration
+- **🔍 Search**  
+  Real-time search by book title or author with debounced input.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- **📊 Sorting**  
+  Sort books by:
+  - Title (A–Z / Z–A)
+  - Author
+  - Status
+  - Date added
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- **📌 Reading Status**  
+  Track each book as:
+  - `Read`
+  - `Reading`
+  - `Abandoned`
+  - **🎨 Sidebar Filters**  
+  All filters (sorting, tags, search) are conveniently grouped in a collapsible sidebar.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+- **💾 Persistent Storage**  
+  Your library is automatically saved to `localStorage` — data survives page reloads.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- **➕ Modal Forms**  
+  Clean modals for adding and editing books with overlay click-to-close.
+## 🛠️ Tech Stack
+- **React** (functional components + hooks)
+- **TypeScript** (full type safety)
+- **CSS Modules** (scoped styles via `.css` files)
+- **LocalStorage** (client-side persistence)
+
+## 🚀 Getting Started
+## 1. Clone the repository
+```bash
+git clone https://github.com/Schtain/My-Library-App.git
+cd my-library
+```
+## 2. Install dependencies
+
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 3. Run the development server
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm start
 ```
+## 📁 Project Structure (key files)
+```text
+src/
+├── App.tsx
+├── Pages/
+│   └── Home.tsx              # Main page with all state logic
+├── Components/
+│   ├── Header/               # Top bar with menu & add button
+│   ├── Sidebar/              # Filters (sort, tags, search, reset)
+│   ├── BookList/             # Renders list of BookCards
+│   ├── BookCard/             # Single book view with status/edit/delete
+│   ├── AddBookModal/         # Form for adding/editing books
+│   ├── SearchBar/            # Debounced search input
+│   └── Overlay/              # Closes modals/sidebar on outside click
+├── hooks/
+│   └── useDebounce.ts        # Custom debounce hook for search
+└── styles/
+    └── *.css                 # Component-scoped styles
+```
+## Screenshots
+
+![Home](screenshots/Home.png)
+![Sidebar](screenshots/Sidebar.png)
+![Modal](screenshots/Modal.png)
+
