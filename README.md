@@ -36,6 +36,12 @@ Add, edit, delete, filter, sort, and search books — all with persistent local 
 - **➕ Modal Forms**  
   Clean modals for adding and editing books with overlay click-to-close.
 
+  ## Screenshots
+
+![Sidebar](Screenshots/Sidebar.png)
+![Modal](Screenshots/Modal.png)
+![Sidebar](Screenshots/Sidebar.png)
+
 ## 🛠️ Tech Stack
 
 - **React** (functional components + hooks)
@@ -84,9 +90,3 @@ src/
 └── styles/
     └── *.css                 # Component-scoped styles
 ```
-
-## Screenshots
-
-![Sidebar](Screenshots/Sidebar.png)
-![Modal](Screenshots/Modal.png)
-![Sidebar](Screenshots/Sidebar.png)
