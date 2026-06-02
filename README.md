@@ -1,11 +1,10 @@
-
 # 📚 My Library — Personal Book Tracking App
 
 A full-featured React application for managing your personal book collection.  
 Add, edit, delete, filter, sort, and search books — all with persistent local storage.
 
-
 ## ✨ Features
+
 - **📖 Book Management**  
   Add new books, edit existing ones, and delete books you no longer need.
 
@@ -29,25 +28,30 @@ Add, edit, delete, filter, sort, and search books — all with persistent local 
   - `Reading`
   - `Abandoned`
   - **🎨 Sidebar Filters**  
-  All filters (sorting, tags, search) are conveniently grouped in a collapsible sidebar.
+    All filters (sorting, tags, search) are conveniently grouped in a collapsible sidebar.
 
 - **💾 Persistent Storage**  
   Your library is automatically saved to `localStorage` — data survives page reloads.
 
 - **➕ Modal Forms**  
   Clean modals for adding and editing books with overlay click-to-close.
+
 ## 🛠️ Tech Stack
+
 - **React** (functional components + hooks)
 - **TypeScript** (full type safety)
 - **CSS Modules** (scoped styles via `.css` files)
 - **LocalStorage** (client-side persistence)
 
 ## 🚀 Getting Started
+
 ## 1. Clone the repository
+
 ```bash
 git clone https://github.com/Schtain/My-Library-App.git
 cd my-library
 ```
+
 ## 2. Install dependencies
 
 ```bash
@@ -59,7 +63,9 @@ npm install
 ```bash
 npm start
 ```
+
 ## 📁 Project Structure (key files)
+
 ```text
 src/
 ├── App.tsx
@@ -78,9 +84,9 @@ src/
 └── styles/
     └── *.css                 # Component-scoped styles
 ```
+
 ## Screenshots
 
-![Home](screenshots/Home.png)
-![Sidebar](screenshots/Sidebar.png)
-![Modal](screenshots/Modal.png)
-
+![Home](Screenshots/home.png)
+![Sidebar](Screenshots/Sidebar.png)
+![Modal](Screenshots/Modal.png)
