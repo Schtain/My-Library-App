@@ -80,7 +80,7 @@ src/
 ```
 ## Screenshots
 
-![Home](screenshots/Home.png)
+![Home](Screenshots/home.png)
 ![Sidebar](screenshots/Sidebar.png)
 ![Modal](screenshots/Modal.png)
 
